@@ -3,7 +3,7 @@
 ```java
 package com.back.simpleDb;
 
-import com.back.Article;
+import com.back.simpleDb.Article;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
