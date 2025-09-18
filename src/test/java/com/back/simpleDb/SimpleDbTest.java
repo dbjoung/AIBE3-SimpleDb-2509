@@ -2,7 +2,6 @@ package com.back.simpleDb;
 
 import com.back.Article;
 import org.junit.jupiter.api.*;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -230,6 +229,7 @@ public class SimpleDbTest {
 
         assertThat(id).isEqualTo(1);
     }
+
 
     @Test
     @DisplayName("selectString")
