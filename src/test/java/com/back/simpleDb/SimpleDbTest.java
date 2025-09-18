@@ -2,7 +2,6 @@ package com.back.simpleDb;
 
 import com.back.Article;
 import org.junit.jupiter.api.*;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -24,7 +23,7 @@ public class SimpleDbTest {
 
     @BeforeAll
     public static void beforeAll() {
-        simpleDb = new SimpleDb("localhost", "root", "root123414", "simpleDb__test");
+        simpleDb = new SimpleDb("localhost", "root", "1234", "simpleDb__test");
         simpleDb.setDevMode(true);
 
         createArticleTable();
@@ -86,10 +85,10 @@ public class SimpleDbTest {
         body = '내용 new'
         */
         sql.append("INSERT INTO article")
-                .append("SET createdDate = NOW()")
-                .append(", modifiedDate = NOW()")
-                .append(", title = ?", "제목 new")
-                .append(", body = ?", "내용 new");
+           .append("SET createdDate = NOW()")
+           .append(", modifiedDate = NOW()")
+           .append(", title = ?", "제목 new")
+           .append(", body = ?", "내용 new");
 
         long newId = sql.insert(); // AUTO_INCREMENT 에 의해서 생성된 주키 리턴
 
@@ -111,8 +110,8 @@ public class SimpleDbTest {
         WHERE id IN ('0', '1', '2', '3')
         */
         sql.append("UPDATE article")
-                .append("SET title = ?", "제목 new")
-                .append("WHERE id IN (?, ?, ?, ?)", 0, 1, 2, 3);
+           .append("SET title = ?", "제목 new")
+           .append("WHERE id IN (?, ?, ?, ?)", 0, 1, 2, 3);
 
         // 수정된 row 개수
         int affectedRowsCount = sql.update();
@@ -133,8 +132,8 @@ public class SimpleDbTest {
         WHERE id IN ('0', '1', '3')
         */
         sql.append("DELETE")
-                .append("FROM article")
-                .append("WHERE id IN (?, ?, ?)", 0, 1, 3);
+           .append("FROM article")
+           .append("WHERE id IN (?, ?, ?)", 0, 1, 3);
 
         // 삭제된 row 개수
         int affectedRowsCount = sql.delete();
@@ -223,8 +222,8 @@ public class SimpleDbTest {
         WHERE id = 1
         */
         sql.append("SELECT id")
-                .append("FROM article")
-                .append("WHERE id = 1");
+           .append("FROM article")
+           .append("WHERE id = 1");
 
         Long id = sql.selectLong();
 
@@ -242,8 +241,8 @@ public class SimpleDbTest {
         WHERE id = 1
         */
         sql.append("SELECT title")
-                .append("FROM article")
-                .append("WHERE id = 1");
+           .append("FROM article")
+           .append("WHERE id = 1");
 
         String title = sql.selectString();
 
@@ -261,8 +260,8 @@ public class SimpleDbTest {
         WHERE id = 1
         */
         sql.append("SELECT isBlind")
-                .append("FROM article")
-                .append("WHERE id = 1");
+           .append("FROM article")
+           .append("WHERE id = 1");
 
         Boolean isBlind = sql.selectBoolean();
 
@@ -311,9 +310,9 @@ public class SimpleDbTest {
         AND title LIKE CONCAT('%', '제목' '%')
         */
         sql.append("SELECT COUNT(*)")
-                .append("FROM article")
-                .append("WHERE id BETWEEN ? AND ?", 1, 3)
-                .append("AND title LIKE CONCAT('%', ? '%')", "제목");
+           .append("FROM article")
+           .append("WHERE id BETWEEN ? AND ?", 1, 3)
+           .append("AND title LIKE CONCAT('%', ? '%')", "제목");
 
         long count = sql.selectLong();
 
@@ -331,8 +330,8 @@ public class SimpleDbTest {
         WHERE id IN ('1', '2', '3')
         */
         sql.append("SELECT COUNT(*)")
-                .append("FROM article")
-                .appendIn("WHERE id IN (?)", 1, 2, 3);
+           .append("FROM article")
+           .appendIn("WHERE id IN (?)", 1, 2, 3);
 
         long count = sql.selectLong();
 
@@ -352,9 +351,9 @@ public class SimpleDbTest {
         ORDER BY FIELD (id, '2', '3', '1')
         */
         sql.append("SELECT id")
-                .append("FROM article")
-                .appendIn("WHERE id IN (?)", ids)
-                .appendIn("ORDER BY FIELD (id, ?)", ids);
+           .append("FROM article")
+           .appendIn("WHERE id IN (?)", ids)
+           .appendIn("ORDER BY FIELD (id, ?)", ids);
 
         List<Long> foundIds = sql.selectLongs();
 
@@ -485,9 +484,9 @@ public class SimpleDbTest {
     public void t018() {
         // SimpleDB에서 SQL 객체를 생성합니다.
         long oldCount = simpleDb.genSql()
-                .append("SELECT COUNT(*)")
-                .append("FROM article")
-                .selectLong();
+                                .append("SELECT COUNT(*)")
+                                .append("FROM article")
+                                .selectLong();
 
         // 트랜잭션을 시작합니다.
         simpleDb.startTransaction();
@@ -501,9 +500,9 @@ public class SimpleDbTest {
         simpleDb.rollback();
 
         long newCount = simpleDb.genSql()
-                .append("SELECT COUNT(*)")
-                .append("FROM article")
-                .selectLong();
+                                .append("SELECT COUNT(*)")
+                                .append("FROM article")
+                                .selectLong();
 
         assertThat(newCount).isEqualTo(oldCount);
     }
@@ -513,9 +512,9 @@ public class SimpleDbTest {
     public void t019() {
         // SimpleDB에서 SQL 객체를 생성합니다.
         long oldCount = simpleDb.genSql()
-                .append("SELECT COUNT(*)")
-                .append("FROM article")
-                .selectLong();
+                                .append("SELECT COUNT(*)")
+                                .append("FROM article")
+                                .selectLong();
 
         // 트랜잭션을 시작합니다.
         simpleDb.startTransaction();
@@ -529,9 +528,9 @@ public class SimpleDbTest {
         simpleDb.commit();
 
         long newCount = simpleDb.genSql()
-                .append("SELECT COUNT(*)")
-                .append("FROM article")
-                .selectLong();
+                                .append("SELECT COUNT(*)")
+                                .append("FROM article")
+                                .selectLong();
 
         assertThat(newCount).isEqualTo(oldCount + 1);
     }
